@@ -1,0 +1,29 @@
+{
+  "name": "event-driven-fraud-detection-logger-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agrawal542/Event-Driven-Fraud-Detection-Logger-Service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agrawal542/Event-Driven-Fraud-Detection-Logger-Service/issues"
+  },
+  "homepage": "https://github.com/agrawal542/Event-Driven-Fraud-Detection-Logger-Service#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.1",
+    "nodemon": "^3.1.10"
+  }
+}
