@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { sendMessage, shutdownProducer } from './index.js';
+import { sendMessage } from './index.js';
 
 const topic = 'transactions-topic';
 const filePath = '/Users/gautam/Desktop/practice/Event-Driven-Fraud-Detection-Logger-Service/src/kafka/data.json';
@@ -21,11 +21,5 @@ export async function sendTransactions() {
         console.log(`${transactionsToSend.length} txn(s) sent to ${topic}`);
     } catch (err) {
         console.error('Send transactions error:', err);
-    } finally {
-        try {
-            await shutdownProducer();
-        } catch (err) {
-            console.error('Producer shutdown error:', err);
-        }
     }
 }

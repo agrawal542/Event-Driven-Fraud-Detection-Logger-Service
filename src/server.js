@@ -8,8 +8,15 @@ const app = express();
 
 
 app.listen(serverConfig.PORT, async () => {
-    console.log(`Server is running on ${serverConfig.PORT}`)
-    // await sendTransactions()
-    // await startTransactionConsumer()
-})
+    console.log(`Server is running on ${serverConfig.PORT}`);
+    // await startTransactionConsumer();
+    // // Run startTransactionConsumer every 3 seconds
+    // setInterval(async () => {
+    //     try {
+    //         await sendTransactions();
+    //     } catch (err) {
+    //         console.error('Error in consumer interval:', err);
+    //     }
+    // }, 1000);
+});
 

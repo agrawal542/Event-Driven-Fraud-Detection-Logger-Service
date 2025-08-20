@@ -52,6 +52,6 @@ export async function shutdownConsumer() {
             console.log('Consumer disconnected');
         }
     } catch (err) {
-        console.error('Error disconnecting consumer:', err);
+        console.error('Error disconnecting consumer:', err.message);
     }
 }
