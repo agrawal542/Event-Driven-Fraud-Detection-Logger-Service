@@ -76,3 +76,19 @@ npm run dev
      --partitions 3 \
      --replication-factor 1
    ```
+
+
+# Health Check Endpoint
+
+## URL
+`http://localhost:3001/api/health`
+
+## Method
+`GET`
+
+## Response
+```json
+{
+  "status": "success",
+  "message": "API is running"
+}
