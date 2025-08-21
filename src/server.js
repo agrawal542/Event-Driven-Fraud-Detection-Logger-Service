@@ -1,28 +1,53 @@
+// server.js
 import express from "express";
 import { serverConfig } from "./config/index.js";
+import router from "./routes/index.js";
 import { sendTransactions } from "./kafka/producer/transaction.js";
 import { startTransactionConsumer } from "./kafka/consumer/transaction.js";
-import router from './routes/index.js'
-
+import { initFraudTable } from "./models/fraud.js";
 
 const app = express();
+const PORT = serverConfig?.PORT || 3001;
 
-app.use(express.json())
+app.use(express.json());
 
-app.use('/api', router)
+// Your API routes
+app.use("/api", router);
 
-http://localhost:3001/api/health
+async function start() {
+    try {
+        // Init dependencies before accepting traffic
+        await initFraudTable();
+        await startTransactionConsumer();
 
-app.listen(serverConfig.PORT, async () => {
-    console.log(`Server is running on ${serverConfig.PORT}`);
-    // await startTransactionConsumer();
-    // // Run startTransactionConsumer every 3 seconds
-    // setInterval(async () => {
-    //     try {
-    //         await sendTransactions();
-    //     } catch (err) {
-    //         console.error('Error in consumer interval:', err);
-    //     }
-    // }, 1000);
-});
+        const server = app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
 
+        // Periodically produce/send transactions (for testing/demo)
+        const intervalId = setInterval(async () => {
+            try {
+                await sendTransactions();
+            } catch (err) {
+                console.error("Error in sendTransactions interval:", err);
+            }
+        }, 2000);
+
+        // Graceful shutdown
+        const shutdown = () => {
+            clearInterval(intervalId);
+            server.close(() => {
+                console.log("HTTP server closed.");
+                process.exit(0);
+            });
+        };
+
+        process.on("SIGINT", shutdown);
+        process.on("SIGTERM", shutdown);
+    } catch (err) {
+        console.error("Failed to start server:", err);
+        process.exit(1);
+    }
+}
+
+start()
