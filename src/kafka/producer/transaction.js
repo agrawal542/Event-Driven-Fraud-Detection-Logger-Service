@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { sendMessage } from './index.js';
+import logger from '../../config/logger_config.js';
 
 const topic = 'transactions-topic';
 const filePath = '/Users/gautam/Desktop/practice/Event-Driven-Fraud-Detection-Logger-Service/src/kafka/data.json';
@@ -18,8 +19,8 @@ export async function sendTransactions() {
         }));
 
         await sendMessage(topic, kafkaMessages);
-        console.log(`${transactionsToSend.length} txn(s) sent to ${topic}`);
+        logger.info(`${transactionsToSend.length} txn(s) sent to ${topic}`);
     } catch (err) {
-        console.error('Send transactions error:', err);
+        logger.error('Send transactions error:', err);
     }
 }

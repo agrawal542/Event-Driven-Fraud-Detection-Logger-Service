@@ -1,4 +1,5 @@
 // service/fraud.js
+import logger from "../config/logger_config.js";
 import { fraudRepository } from "../repository/fraud.js";
 import { evaluateFraudRules } from "../utils/fraudRules.js";
 
@@ -7,34 +8,52 @@ class FraudService {
      * Normalize and validate payload, then upsert.
      */
     async insertFlag(payload = {}) {
-        const {
-            transactionId,
-            userId,
-            amount,
-            location,
-            timestamp
-        } = payload;
+        try {
+            const {
+                transactionId,
+                userId,
+                amount,
+                location,
+                timestamp
+            } = payload;
 
-        const txId = String(transactionId);
-        const uId = String(userId);
-        const amt = Number(amount);
-        const loc = String(location || "");
-        const ts = timestamp ? String(timestamp) : new Date().toISOString();
+            if (!transactionId || !userId) {
+                throw new Error("transactionId and userId are required");
+            }
 
-        // recent transactions for rule check
-        const recent = await fraudRepository.getFlagsByUser(uId);
+            const txId = String(transactionId).trim();
+            const uId = String(userId).trim();
+            const amt = Number(amount) || 0;
+            const loc = location ? String(location).trim() : "";
+            const ts = timestamp ? new Date(timestamp).toISOString() : new Date().toISOString();
 
-        // evaluate rules (just pass necessary params)
-        const violatedRules = evaluateFraudRules({
-            amount: amt,
-            location: loc,
-            timestamp: ts,
-            recentTransactions: recent
-        });
+            // recent transactions for rule check
+            const recent = await fraudRepository.getFlagsByUser(uId) || [];
 
-        const vrStr = JSON.stringify(violatedRules);
+            // evaluate rules (just pass necessary params)
+            const violatedRules = evaluateFraudRules({
+                amount: amt,
+                location: loc,
+                timestamp: ts,
+                recentTransactions: recent
+            });
 
-        return fraudRepository.saveFlag(txId, uId, amt, loc, ts, vrStr);
+            if (violatedRules?.length > 0) {
+                return fraudRepository.saveFlag(
+                    txId,
+                    uId,
+                    amt,
+                    loc,
+                    ts,
+                    JSON.stringify(violatedRules)
+                );
+            }
+
+            return null; // explicit return
+        } catch (err) {
+            logger.error("FraudService.insertFlag error:", err);
+            throw err; // propagate to controller
+        }
     }
 
     async getAllFlags() {
@@ -42,7 +61,8 @@ class FraudService {
     }
 
     async getFlagsByUser(userId) {
-        return fraudRepository.getFlagsByUser(userId);
+        if (!userId) throw new Error("userId is required");
+        return fraudRepository.getFlagsByUser(String(userId));
     }
 }
 

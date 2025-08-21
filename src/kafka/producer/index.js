@@ -1,3 +1,4 @@
+import logger from '../../config/logger_config.js';
 import { getKafkaClient } from '../index.js';
 
 let producer;
@@ -26,9 +27,9 @@ export async function sendMessage(topic, messages) {
         if (!prod) return;
 
         await prod.send({ topic, messages });
-        console.log(`Message sent to ${topic}`);
+        logger.info(`Message sent to ${topic}`);
     } catch (err) {
-        console.error('Send message error:', err);
+        logger.error('Send message error:', err);
     }
 }
 
@@ -36,9 +37,9 @@ export async function shutdownProducer() {
     try {
         if (producer) {
             await producer.disconnect();
-            console.log('Producer disconnected');
+            logger.info('Producer disconnected');
         }
     } catch (err) {
-        console.error('Producer disconnect error:', err);
+        logger.error('Producer disconnect error:', err);
     }
 }

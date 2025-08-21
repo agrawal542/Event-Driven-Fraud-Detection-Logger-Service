@@ -1,3 +1,4 @@
+import logger from '../../config/logger_config.js';
 import { getKafkaClient } from '../index.js';
 
 let consumer;
@@ -8,11 +9,11 @@ export async function getConsumer(groupId) {
             const kafka = getKafkaClient();
             consumer = kafka.consumer({ groupId });
             await consumer.connect();
-            console.log('Consumer connected');
+            logger.info('Consumer connected');
         }
         return consumer;
     } catch (err) {
-        console.error('Error connecting consumer:', err);
+        logger.error('Error connecting consumer:', err);
     }
 }
 
@@ -34,14 +35,14 @@ export async function subscribeAndConsume(topic, groupId, messageHandler) {
                         headers: message.headers,
                     });
                 } catch (err) {
-                    console.error('Handler error:', err);
+                    logger.error('Handler error:', err);
                 }
             },
         });
 
-        console.log(`Subscribed to ${topic}`);
+        logger.info(`Subscribed to ${topic}`);
     } catch (err) {
-        console.error('Subscribe error:', err);
+        logger.error('Subscribe error:', err);
     }
 }
 
@@ -49,9 +50,9 @@ export async function shutdownConsumer() {
     try {
         if (consumer) {
             await consumer.disconnect();
-            console.log('Consumer disconnected');
+            logger.info('Consumer disconnected');
         }
     } catch (err) {
-        console.error('Error disconnecting consumer:', err.message);
+        logger.error('Error disconnecting consumer:', err.message);
     }
 }

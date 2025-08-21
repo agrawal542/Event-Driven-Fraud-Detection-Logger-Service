@@ -1,3 +1,5 @@
+import logger from "../config/logger_config.js";
+
 /**
  * Evaluate fraud rules on a transaction.
  *
@@ -33,6 +35,16 @@ export function evaluateFraudRules({ amount, location, timestamp, recentTransact
     // Rule 3: Amount is a round number divisible by 1000
     if (amount % 1000 === 0) {
         vr.push("ROUND_THOUSAND_AMOUNT");
+    }
+
+    // 🚨 Log fraud detection decisions if any rules triggered
+    if (vr.length > 0) {
+        logger.warn("Fraud rules triggered", {
+            amount,
+            location,
+            timestamp,
+            rules: vr
+        });
     }
 
     return vr;

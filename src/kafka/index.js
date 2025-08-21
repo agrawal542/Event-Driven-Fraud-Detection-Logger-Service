@@ -1,5 +1,6 @@
 import { Kafka } from 'kafkajs'
 import { serverConfig } from '../config/index.js';
+import logger from '../config/logger_config.js'
 
 
 function connectToKafka() {
@@ -21,7 +22,7 @@ function connectToKafka() {
             return connection;
         }
     } catch (error) {
-        console.error('Kafka connect Error sending message:', err);
+        logger.error('Kafka connect Error sending message:', err);
     }
 }
 

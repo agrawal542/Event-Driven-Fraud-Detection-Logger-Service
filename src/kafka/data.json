@@ -2,7 +2,7 @@
   {
     "transactionId": "txn_789",
     "userId": "user_123",
-    "amount": 7400,
+    "amount": 700,
     "location": "Nigeria",
     "timestamp": "2025-07-30T10:12:00Z"
   },
@@ -16,56 +16,56 @@
   {
     "transactionId": "txn_791",
     "userId": "user_125",
-    "amount": 1500,
+    "amount": 500,
     "location": "USA",
     "timestamp": "2025-07-30T11:30:00Z"
   },
   {
     "transactionId": "txn_792",
     "userId": "user_126",
-    "amount": 8900,
+    "amount": 1200,
     "location": "UK",
     "timestamp": "2025-07-30T12:00:00Z"
   },
   {
     "transactionId": "txn_793",
     "userId": "user_127",
-    "amount": 4200,
+    "amount": 5500,
     "location": "Germany",
     "timestamp": "2025-07-30T12:45:00Z"
   },
   {
     "transactionId": "txn_794",
     "userId": "user_128",
-    "amount": 6700,
+    "amount": 300,
     "location": "Brazil",
     "timestamp": "2025-07-30T13:10:00Z"
   },
   {
     "transactionId": "txn_795",
     "userId": "user_129",
-    "amount": 5400,
+    "amount": 7000,
     "location": "Japan",
     "timestamp": "2025-07-30T13:50:00Z"
   },
   {
     "transactionId": "txn_796",
     "userId": "user_130",
-    "amount": 2300,
+    "amount": 300,
     "location": "Canada",
     "timestamp": "2025-07-30T14:20:00Z"
   },
   {
     "transactionId": "txn_797",
     "userId": "user_131",
-    "amount": 9100,
+    "amount": 2000,
     "location": "Australia",
     "timestamp": "2025-07-30T14:55:00Z"
   },
   {
     "transactionId": "txn_798",
     "userId": "user_132",
-    "amount": 3800,
+    "amount": 300,
     "location": "France",
     "timestamp": "2025-07-30T15:30:00Z"
   }

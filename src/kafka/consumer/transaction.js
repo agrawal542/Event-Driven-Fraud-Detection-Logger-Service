@@ -1,3 +1,4 @@
+import logger from '../../config/logger_config.js';
 import { fraudService } from '../../services/fraud.js';
 import { subscribeAndConsume } from './index.js';
 
@@ -9,7 +10,7 @@ export async function startTransactionConsumer() {
         await subscribeAndConsume(topic, groupId, async ({ key, value }) => {
             try {
                 const transaction = JSON.parse(value);
-                console.log(`Received txn ${key}:`, transaction);
+                logger.info(`Received txn ${key}:`, transaction);
 
                 // Insert transaction flag into fraud service
                 await fraudService.insertFlag({
@@ -23,12 +24,12 @@ export async function startTransactionConsumer() {
                 // Add your processing logic here
                 // e.g., fraud detection, saving to DB, etc.
             } catch (err) {
-                console.error('Transaction processing error:', err);
+                logger.error('Transaction processing error:', err);
             }
         });
 
-        console.log('Consumer started for topic:', topic);
+        logger.info('Consumer started for topic:', topic);
     } catch (err) {
-        console.error('Consumer start error:', err);
+        logger.error('Consumer start error:', err);
     }
 }
